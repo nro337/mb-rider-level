@@ -42,7 +42,6 @@ export default function Trail() {
       </ScrollView>
     )
   }
-  console.log(segment)
 
   // if (trail.id === 'review') {
   //   return (
