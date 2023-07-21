@@ -28,7 +28,6 @@ export default function TabOneScreen() {
 
   useEffect(() => {
     if (selectedId) {
-      console.log("ASadsa", selectedId)
       router.push(`/${segment}/trail/${selectedId}`)
       setSelectedId('')
     }
