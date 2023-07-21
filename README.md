@@ -21,5 +21,5 @@ npx expo start
 * Press `CTRL + C` to kill the current server process.
 
 ## Other Resources:
-[Figma Design File](https://www.figma.com/file/WSRGcAsVMTmNGIwnlYYHzk/Trail-Tailor?type=design&node-id=0%3A1&mode=design&t=yFUCxeEE72cog2Ra-1)
-[Figma Prototype](https://www.figma.com/proto/WSRGcAsVMTmNGIwnlYYHzk/Trail-Tailor?page-id=0%3A1&type=design&node-id=1-2907&viewport=-64%2C303%2C0.4&t=Mgnh959uDVqLWjnN-1&scaling=scale-down&starting-point-node-id=1%3A2907&mode=design)
+* [Figma Design File](https://www.figma.com/file/WSRGcAsVMTmNGIwnlYYHzk/Trail-Tailor?type=design&node-id=0%3A1&mode=design&t=yFUCxeEE72cog2Ra-1)
+* [Figma Prototype](https://www.figma.com/proto/WSRGcAsVMTmNGIwnlYYHzk/Trail-Tailor?page-id=0%3A1&type=design&node-id=1-2907&viewport=-64%2C303%2C0.4&t=Mgnh959uDVqLWjnN-1&scaling=scale-down&starting-point-node-id=1%3A2907&mode=design)
