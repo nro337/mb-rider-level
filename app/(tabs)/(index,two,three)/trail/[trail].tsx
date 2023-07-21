@@ -1,10 +1,15 @@
 import { TrailData } from '@/constants/Trails';
 import { Image as ExpoImage, ImageSource} from 'expo-image';
 import {Asset, useAssets} from 'expo-asset';
-import { Link, Stack, useLocalSearchParams } from 'expo-router';
-import { Image, Text, View, StyleSheet, Dimensions } from 'react-native';
+import { Link, Stack, useLocalSearchParams, useSegments } from 'expo-router';
+import { Image, Text, View, StyleSheet, Dimensions, Pressable, useColorScheme } from 'react-native';
 import Trails from '@/constants/Trails';
 import { ScrollView } from 'react-native-gesture-handler';
+import { FontAwesome } from '@expo/vector-icons';
+import Colors from '@/constants/Colors';
+
+type Group<T extends string> = `(${T})`
+type SharedSegment = Group<"tabs">
 
 function LogoTitle() {
   return (
@@ -26,6 +31,9 @@ export default function Trail() {
     require("@/assets/images/double_black_diamond.jpg"),
   ]);
 
+  const colorScheme = useColorScheme();
+  const [segment] = useSegments() as [SharedSegment]
+
 
   if (!trail) {
     return (
@@ -34,11 +42,33 @@ export default function Trail() {
       </ScrollView>
     )
   }
+  console.log(segment)
+
+  // if (trail.id === 'review') {
+  //   return (
+  //     <ScrollView contentInsetAdjustmentBehavior='automatic'>
+  //       <Text style={{color: '#fff'}}>Review</Text>
+  //     </ScrollView>
+  //   )
+  // }
 
 
   return (
     <>
-      <Stack.Screen options={{title: `${trail.title}`}} />
+      <Stack.Screen options={{title: `${trail.title}`, headerRight: () => (
+        <Link href={`/${segment}/review`} asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <FontAwesome
+              name="edit"
+              size={25}
+              color={Colors[colorScheme ?? 'light'].text}
+              style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+            />
+          )}
+        </Pressable>
+      </Link>
+      )}} />
       {/* <ScrollView contentInsetAdjustmentBehavior='automatic'> */}
         <View style={styles.container}>
           <ExpoImage 
