@@ -26,9 +26,10 @@ export default function TabLayout() {
         }
       }}>
       <Tabs.Screen
-        name="index"
+        name="(index)"
         options={{
-          title: 'Find Tools',
+          title: 'Find Trails',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
           tabBarActiveTintColor: '#000',
           tabBarActiveBackgroundColor: Colors[colorScheme ?? 'light'].tabBackgroundSelected,
@@ -50,9 +51,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="(two)"
         options={{
           title: 'My Top 10',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="arrow-up" color={color} />,
           tabBarActiveTintColor: '#000',
           tabBarActiveBackgroundColor: Colors[colorScheme ?? 'light'].tabBackgroundSelected,
@@ -60,9 +62,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="three"
+        name="(three)"
         options={{
           title: 'About',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           tabBarActiveTintColor: '#000',
           tabBarActiveBackgroundColor: Colors[colorScheme ?? 'light'].tabBackgroundSelected,
