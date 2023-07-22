@@ -1,4 +1,4 @@
-# Mountain Bike Rider
+# Mountain Bike Rider Metrics
 ## DGMD S-14 Final Project
 ### Group 3
 #### Amaliya Akopyan, Hannah Halvorsen, Nick Alico
