@@ -7,23 +7,50 @@ import Trails from '@/constants/Trails';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
+import { useEffect, useState } from 'react';
+import TrailType from '@/app/types/Trail'; '@/app/types/Trail';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Group<T extends string> = `(${T})`
 type SharedSegment = Group<"tabs">
 
-function LogoTitle() {
-  return (
-    <Image
-      style={{ width: 50, height: 50 }}
-      source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-    />
-  );
-}
-
 export default function Trail() {
+
+  const [loading, setLoading] = useState(true);
+  const [trail, setTrail] = useState<TrailType | null>(null);
+  const [trails, setTrails] = useState<TrailType[] | null>(null);
+
   // @ts-ignore
-  const { trail: id } = useLocalSearchParams<{ trail: TrailData }>();
-  const trail = Trails.find((trail) => trail.id == id)
+  const { trail: id } = useLocalSearchParams<{ trail: TrailData | any }>();
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const trails = await getData();
+      setTrails(trails);
+    };
+
+    getUsers();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("trails");
+      setLoading(false)
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    if (trails) {
+      let trail = trails.find((trail) => trail.id == id)
+      if (trail !== undefined) {
+        setTrail(trail)
+      }
+    }
+  }, [trails])
+  
   const [assets, error]: [Asset[] | undefined, Error | undefined]  = useAssets([
     require("@/assets/images/green_circle.jpg"),
     require("@/assets/images/blue_square.jpg"),
@@ -38,7 +65,7 @@ export default function Trail() {
   if (!trail) {
     return (
       <ScrollView contentInsetAdjustmentBehavior='automatic'>
-        <Text style={{color: '#fff'}}>Post not found: {id}</Text>
+        <Text style={{color: '#fff'}}>Item not found: {id}</Text>
       </ScrollView>
     )
   }
@@ -54,6 +81,8 @@ export default function Trail() {
 
   return (
     <>
+    {
+      loading ? <Text>Loading...</Text> : <>
       <Stack.Screen options={{title: `${trail.title}`, headerRight: () => (
         <Link href={`/${segment}/review`} asChild>
         <Pressable>
@@ -72,7 +101,7 @@ export default function Trail() {
         <View style={styles.container}>
           <ExpoImage 
             style={styles.image}
-            source={trail.img}
+            source={trail.img ? trail.img : 'https://cdn-icons-png.flaticon.com/512/13/13437.png?w=740&t=st=1690651448~exp=1690652048~hmac=6855ee3979b2c745c6ff2c8979eaab68c8b97f7abf78d52cb4aec6bab9782b19'}
             contentFit='cover'
             transition={100}
           />
@@ -132,10 +161,42 @@ export default function Trail() {
               contentFit='cover'
           />
           }
+          {assets && trail.difficulty_rating === undefined && 
+            <ExpoImage 
+              style={{width: 125, height: 75}}
+              source={'https://cdn-icons-png.flaticon.com/512/13/13437.png?w=740&t=st=1690651448~exp=1690652048~hmac=6855ee3979b2c745c6ff2c8979eaab68c8b97f7abf78d52cb4aec6bab9782b19'}
+              contentFit='contain'
+          />
+          }
+          <Text style={{fontSize: 20, color: '#ffffff'}}>{trail.description}</Text>
           <View style={styles.table}>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
               <View style={{}}>
-                <Text style={{color: '#fff', fontSize: 32}}>Trail Level</Text>
+                <Text style={{color: '#fff', fontSize: 24}}>Location</Text>
+              </View>
+              <View>
+                <Text style={{color: '#fff', fontSize: 24}}>{trail.town ? trail.town + ',' : 'N/A'} {trail.state ? trail.state : ''}</Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+              <View style={{}}>
+                <Text style={{color: '#fff', fontSize: 24}}>Length</Text>
+              </View>
+              <View>
+                <Text style={{color: '#fff', fontSize: 24}}>{trail.length}</Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+              <View style={{}}>
+                <Text style={{color: '#fff', fontSize: 24}}>Coordinates</Text>
+              </View>
+              <View>
+                <Text style={{color: '#fff', fontSize: 24}}>{trail.start_lat.toFixed(2)}&deg;, {trail.start_lon.toFixed(2)}&deg;</Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+              <View style={{}}>
+                <Text style={{color: '#fff', fontSize: 24}}>Trail Level</Text>
               </View>
               <View>
                 <Text style={{color: '#fff', fontSize: 24}}>7</Text>
@@ -143,7 +204,7 @@ export default function Trail() {
             </View>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
               <View>
-                <Text style={{color: '#fff', fontSize: 32}}>Avg. Speed</Text>
+                <Text style={{color: '#fff', fontSize: 24}}>Avg. Speed</Text>
               </View>
               <View>
                 <Text style={{color: '#fff', fontSize: 24}}>29.1 mph</Text>
@@ -151,7 +212,7 @@ export default function Trail() {
             </View>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
               <View>
-                <Text style={{color: '#fff', fontSize: 32}}>Avg. Time</Text>
+                <Text style={{color: '#fff', fontSize: 24}}>Avg. Time</Text>
               </View>
               <View>
                 <Text style={{color: '#fff', fontSize: 24}}>7:12</Text>
@@ -159,7 +220,7 @@ export default function Trail() {
             </View>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
               <View>
-                <Text style={{color: '#fff', fontSize: 32}}>Flow</Text>
+                <Text style={{color: '#fff', fontSize: 24}}>Flow</Text>
               </View>
               <View>
                 <Text style={{color: '#fff', fontSize: 24}}>6.3</Text>
@@ -167,7 +228,7 @@ export default function Trail() {
             </View>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
               <View>
-                <Text style={{color: '#fff', fontSize: 32}}>Grit</Text>
+                <Text style={{color: '#fff', fontSize: 24}}>Grit</Text>
               </View>
               <View>
                 <Text style={{color: '#fff', fontSize: 24}}>1</Text>
@@ -175,7 +236,8 @@ export default function Trail() {
             </View>
           </View>
         </View>
-      {/* </ScrollView> */}
+      </>
+    }
     </>
     // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
     //   <Text style={{color: '#fff'}}>Test</Text>
@@ -226,8 +288,8 @@ const styles = StyleSheet.create({
   },
   image: {
     backgroundColor: '#585123',
-    width: 250,
-    height: 250,
+    width: 200,
+    height: 200,
     // height: '50%',
   },
   difficulty_rating: {

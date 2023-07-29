@@ -1,5 +1,7 @@
+import TrailType from "@/app/types/Trail";
+
 export type TrailData = {
-  id: string;
+  id: any;
   title: string;
   town: string;
   state: string;
@@ -14,7 +16,7 @@ export type TrailData = {
 }
 
 export type ItemProps = {
-  item: TrailData;
+  item: TrailType;
   onPress: () => void;
   backgroundColor: string;
   textColor: string;

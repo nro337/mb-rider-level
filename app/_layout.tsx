@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import Trails from '@/constants/Trails';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -23,6 +24,33 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+
+  // TODO: Populate Trails in DB
+  // useEffect(() => {
+  //   for (let trail of Trails) {
+  //     fetch(`https://bike.langswap.app/trail`, {
+  //         method: "POST",
+  //         body: JSON.stringify({
+  //             title: trail.title,
+  //             description: trail.summary,
+  //             start_lat: trail.lat,
+  //             start_lon: trail.long,
+  //             end_lat: 0,
+  //             end_lon: 0,
+  //             length: trail.length
+  //         }),
+  //         headers: {
+  //             "Content-type": "application/json; charset=UTF-8"
+  //         }
+  //     })
+      
+  //     // Converting to JSON
+  //     .then(response => response.json())
+      
+  //     // Displaying results to console
+  //     .then(json => console.log(json));
+  //   }
+  // }, [])
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {

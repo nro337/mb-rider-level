@@ -1,22 +1,45 @@
 import { FlatList, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { ItemProps } from '@/constants/Trails';
-import { TrailData, Trails } from '@/constants/Trails';
+// import { TrailData, Trails } from '@/constants/Trails';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import useScrollToTop from '@/components/useScrollToTopWithOffset';
+import TrailType from '@/app/types/Trail';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Group<T extends string> = `(${T})`
 type SharedSegment = Group<"two">
 
 export default function TabTwoScreen() {
   const [selectedId, setSelectedId] = useState<string>();
+  const [loading, setLoading] = useState(true);
+  const [trails, setTrails] = useState<TrailType[] | null>(null);
   const [segment] = useSegments() as [SharedSegment]
   const router = useRouter()
   const ref = useRef<FlatList>(null)
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const trails = await getData();
+      setTrails(trails);
+    };
+
+    getUsers();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("trails");
+      setLoading(false)
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   useScrollToTop(
     ref,
@@ -32,7 +55,7 @@ export default function TabTwoScreen() {
     </TouchableOpacity>
   )
 
-  const renderItem = ({item}: {item: TrailData}) => {
+  const renderItem = ({item}: {item: TrailType}) => {
     const backgroundColor = item.id === selectedId ? '#E83F6F' : '#FFFFFF';
     const color = item.id === selectedId ? 'white' : 'black';
 
@@ -54,7 +77,7 @@ export default function TabTwoScreen() {
         ref={ref}
         scrollToOverflowEnabled
         contentInsetAdjustmentBehavior='automatic'
-        data={Trails}
+        data={trails}
         style={{flex: 1}}
         renderItem={renderItem}
         keyExtractor={item => item.id}

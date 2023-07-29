@@ -3,6 +3,8 @@ import { Link, Tabs } from 'expo-router';
 import { Pressable, useColorScheme } from 'react-native';
 
 import Colors from '@/constants/Colors';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -16,6 +18,23 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // setLoading(true)
+    fetch('https://bike.langswap.app/users/1')
+      .then((response) => response.json())
+      .then(async (json) => {
+        try {
+          const jsonValue = JSON.stringify(json);
+          await AsyncStorage.setItem('user', jsonValue);
+        } catch (error) {
+          console.error(error)
+        }
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <Tabs
