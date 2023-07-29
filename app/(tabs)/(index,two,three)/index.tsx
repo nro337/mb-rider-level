@@ -73,8 +73,13 @@ export default function TabOneScreen() {
 
   useEffect(() => {
     if (selectedId) {
-      router.push(`/${segment}/trail/${selectedId}`);
-      setSelectedId("");
+      router.push({
+        pathname: `/${segment}/trail/${selectedId}`,
+        // @ts-ignore
+        // params: {id: selectedId}
+      })
+      // router.push(`/${segment}/trail/${selectedId}`);
+      // setSelectedId("");
     }
   }, [selectedId]);
 

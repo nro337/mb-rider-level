@@ -84,11 +84,15 @@ export default function Trail() {
     {
       loading ? <Text>Loading...</Text> : <>
       <Stack.Screen options={{title: `${trail.title}`, headerRight: () => (
-        <Link href={`/${segment}/review`} asChild>
+        // @ts-ignore
+        <Link href={{
+          pathname: `/${segment}/completion`,
+          params: {id: id}
+        }}  asChild>
         <Pressable>
           {({ pressed }) => (
             <FontAwesome
-              name="edit"
+              name="plus-circle"
               size={25}
               color={Colors[colorScheme ?? 'light'].text}
               style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
