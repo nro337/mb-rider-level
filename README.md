@@ -3,6 +3,18 @@
 ### Group 3
 #### Amaliya Akopyan, Hannah Halvorsen, Nick Alico
 
+*VIDEO HERE*
+
+The Mountain Bike Rider and Trail Metrics application aims to provide mountain bikers with a personalized lense into how they are performing, and where their training may take them next. The application integrates your performance metrics with crowd-sourced mountain bike trail data to help inform riders on which trails near them may be a safe, incremental challenge in their training journey.
+
+The app provides 2 novel performance measurements: **Trail score** and **Rider score**. 
+* **Rider Score** = Informed personal rating based on a rider's activity history -> 1-10 scale
+* **Trail Score** = Crowd-sourced trail details and user input, including measurements such as average speed and average duration, which provides riders with grounding information which can be used as suggestions of what trails are truly approachable around their current rider performance level.
+
+Much of our motivation extends from the fact that personalized performance insight has become a booming field in the fitness space, yet personalized trail suggestions seem to be largely underexplored. The [MTB IMBA Trail Difficulty Scale](https://pedalchile.com/blog/mtb-trail-rating) was created as a helpful generalized guide for riders to follow (you may recognize this as the ski/snowboarding difficulty scale), however this is far too generalized and cannot provide adaptive insight as bikers train and improve. The Rider Score and Trail Score aim to alleivate this descrepancy by integrating current rider performance metrics alongside up-to-date trail difficulty insight. This migration aims to improve safety for riders, encourage trail discovery, and motivate bikers to incrementally challenge themselves while having fun at the same time.
+
+*Rider/Trail Score Diagram Here*
+
 ## Requirements
 1. Must have npx installed
 2. Must have an iOS device
@@ -22,6 +34,11 @@ npx expo start
 * Allow the app to load, and you will see the application render.
   * [Debugging Details](https://apps.apple.com/us/app/expo-go/id982107779)
   * [Official Documentation](https://docs.expo.dev/get-started/installation/)
+
+## API Documentation
+* Our Backend API is being host live at [bike.langswap.app](https://bike.langswap.app/)
+* Endpoint Documentation: [https://bike.langswap.app/docs](https://bike.langswap.app/docs)
+* *ADD BACKEND GITLAB CODE HERE WITH CALCULATIONS*
 
 ## How to stop
 * Press `CTRL + C` to kill the current server process.

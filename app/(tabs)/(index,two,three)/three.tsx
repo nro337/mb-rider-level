@@ -40,7 +40,7 @@ export default function About() {
           <View style={styles.row}>
             <View style={styles.block}>
               <Text style={{ fontSize: 20 }}>Rider Level</Text>
-              <Text style={{ fontSize: 18 }}>8</Text>
+              <Text style={{ fontSize: 18 }}>{user?.score}</Text>
             </View>
           </View>
           <View style={styles.row}>

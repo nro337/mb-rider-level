@@ -1,6 +1,6 @@
 import { FlatList, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 
-import Trails, { ItemProps, TrailData } from '@/constants/Trails';
+import Trails, { ItemProps, TrailData, TrailDataWithFlow } from '@/constants/Trails';
 // import { TrailData, Trails } from '@/constants/Trails';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
@@ -51,7 +51,10 @@ export default function TabTwoScreen() {
 
   const Trail = ({item, onPress, backgroundColor, textColor}: ItemProps) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, {backgroundColor}]}>
-      <Text style={[styles.title, {color: textColor}]}>{item.title}</Text>
+      <View style={{display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between', backgroundColor: 'transparent'}}>
+        <Text style={[styles.title, {color: textColor}]}>{item.title}</Text>
+        <Text style={[styles.title, {color: textColor}]}>Flow: {item.flow}</Text>
+      </View>
     </TouchableOpacity>
   )
 
@@ -69,6 +72,17 @@ export default function TabTwoScreen() {
     );
   };
 
+  const add_flow = (trails: TrailData[]) : TrailDataWithFlow[] => {
+    let new_trails: TrailDataWithFlow[] = []
+    for (let t of trails) {
+      new_trails.push({
+        flow: Math.floor(Math.random() * (10 - 0 + 1) + 0),
+        ...t
+      })
+    }
+    return new_trails;
+  }
+
   return (
     // <View style={styles.container}>
     <>
@@ -77,7 +91,7 @@ export default function TabTwoScreen() {
         ref={ref}
         scrollToOverflowEnabled
         contentInsetAdjustmentBehavior='automatic'
-        data={Trails}
+        data={add_flow(Trails)}
         style={{flex: 1}}
         renderItem={renderItem}
         keyExtractor={item => item.id}

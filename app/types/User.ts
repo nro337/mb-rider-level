@@ -4,7 +4,8 @@ type User = {
   is_superuser: boolean,
   full_name: string,
   id: number,
-  trails: [any]
+  trails: [any],
+  score: number
 }
 
 export default User;

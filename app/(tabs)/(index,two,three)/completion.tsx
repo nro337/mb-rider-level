@@ -16,7 +16,8 @@ type Submission = {
   user: number,
   trail: number,
   start: string,
-  end: string
+  end: string,
+  flow: number
 }
 
 type mode = 'date' | 'time' | 'datetime' | 'countdown';
@@ -104,15 +105,16 @@ export default function Completion() {
               trail: id,
               start: "",
               end: "", 
+              flow: 0
             }}
             onSubmit={values => console.log(values)}
           >
-            {({handleChange, handleSubmit, setFieldValue, values}) => (
+            {({handleChange, handleSubmit, setFieldValue, values, errors}) => (
               <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', 'alignItems': 'center', width: '100%'}}>
                 <View style={styles.rowWrapper}>
                   <Text style={styles.label}>User ID</Text>
                   <TextInput
-                    style={{fontSize: 24, color: '#fff'}}
+                    style={styles.textArea}
                     onLayout={() => setFieldValue('user', user?.id.toString())}
                     onChangeText={handleChange('user')}
                     value={user?.id.toString()}
@@ -124,7 +126,7 @@ export default function Completion() {
                 <View style={styles.rowWrapper}>
                   <Text style={styles.label}>Trail ID</Text>
                   <TextInput
-                    style={{fontSize: 24, color: '#fff'}}
+                    style={styles.textArea}
                     onChangeText={handleChange('trail')}
                     value={id}
                     editable={false}
@@ -153,6 +155,11 @@ export default function Completion() {
                     )}
                   </SafeAreaView>
                 </View>
+                {errors.start ? (
+                  <Text>{errors.start}</Text>
+                ) : (
+                  <></>
+                )}
                 <View style={styles.rowWrapper}>
                   <Text style={styles.label}>End</Text>
                   {/* <TextInput
@@ -174,11 +181,22 @@ export default function Completion() {
                     )}
                   </SafeAreaView>
                 </View>
-                {/* {errors.firstName ? (
-                  <Text>{errors.firstName}</Text>
+                <View style={styles.rowWrapper}>
+                  <Text style={styles.label}>Flow Rating</Text>
+                  <TextInput
+                    style={styles.textArea}
+                    onChangeText={handleChange('flow')}
+                    value={values.flow.toString()}
+                    // label="User ID"
+                    placeholder="Flow"
+                    keyboardType='numbers-and-punctuation'
+                  />
+                </View>
+                {errors.flow ? (
+                  <Text>{errors.flow}</Text>
                 ) : (
                   <></>
-                )} */}
+                )}
                 <View style={{borderColor: '#000', borderWidth: 1, borderStyle: 'solid', borderRadius: 10, backgroundColor: '#000'}}>
                   <Button title='Submit' onPress={handleSubmit as (event: GestureResponderEvent | undefined) => void} color={'#F5E960'}  />
                 </View>
@@ -210,7 +228,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 150
+    // paddingTop: 150
   },
   title: {
     fontSize: 20,
@@ -229,6 +247,18 @@ const styles = StyleSheet.create({
     flexDirection : 'row', 
     width: '100%', 
     justifyContent: 'space-between',
-    paddingHorizontal: 16
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 10
+  },
+  textArea: {
+    fontSize: 24, 
+    color: '#fff', 
+    width: 40, 
+    borderColor: '#000', 
+    borderStyle: 'solid', 
+    borderWidth: 2, 
+    borderRadius: 8,
+    textAlign: 'center'
   }
 });
