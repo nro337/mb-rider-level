@@ -1,6 +1,6 @@
 import { FlatList, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { ItemProps } from '@/constants/Trails';
+import Trails, { ItemProps, TrailData } from '@/constants/Trails';
 // import { TrailData, Trails } from '@/constants/Trails';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
@@ -55,7 +55,7 @@ export default function TabTwoScreen() {
     </TouchableOpacity>
   )
 
-  const renderItem = ({item}: {item: TrailType}) => {
+  const renderItem = ({item}: {item: TrailData}) => {
     const backgroundColor = item.id === selectedId ? '#E83F6F' : '#FFFFFF';
     const color = item.id === selectedId ? 'white' : 'black';
 
@@ -77,7 +77,7 @@ export default function TabTwoScreen() {
         ref={ref}
         scrollToOverflowEnabled
         contentInsetAdjustmentBehavior='automatic'
-        data={trails}
+        data={Trails}
         style={{flex: 1}}
         renderItem={renderItem}
         keyExtractor={item => item.id}

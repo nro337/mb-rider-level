@@ -1,13 +1,16 @@
-import { StyleSheet, FlatList, TextInput, TouchableWithoutFeedback, Keyboard, Button, GestureResponderEvent } from 'react-native';
+import { StyleSheet, FlatList, TextInput, TouchableWithoutFeedback, Keyboard, Button, GestureResponderEvent, SafeAreaView } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 import { Stack, useGlobalSearchParams, useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 // import { TrailData } from '@/constants/Trails';
 import TrailType from '@/app/types/Trail';
 import { Formik, FormikHandlers, FormikHelpers } from 'formik';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import User from '@/app/types/User';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Submission = {
   user: number,
@@ -16,8 +19,16 @@ type Submission = {
   end: string
 }
 
+type mode = 'date' | 'time' | 'datetime' | 'countdown';
+
 export default function Completion() {
   const [text, setText] = useState<string>()
+  const [startDate, setStartDate] = useState(new Date('2023-01-01T000:00:00'));
+  const [endDate, setEndDate] = useState(new Date('2023-01-01T000:00:00'));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
   // const [values, setValues] = useState<Submission>()
   const router = useRouter()
 
@@ -30,60 +41,153 @@ export default function Completion() {
       {children}
     </TouchableWithoutFeedback>
     );
+  
+    // @ts-ignore
+    const onStartChange = (event, selectedDate) => {
+      const currentDate = selectedDate;
+      // setShow(false);
+      setStartDate(currentDate);
+    };
+
+    // @ts-ignore
+    const onEndChange = (event, selectedDate) => {
+      const currentDate = selectedDate;
+      // setShow(false);
+      setEndDate(currentDate);
+    };
+
+    const onChangeWrapper = (event:DateTimePickerEvent, selectedDate:any) => {
+      onStartChange(event, selectedDate)
+      // setFieldValue()
+    }
+  
+    const showMode = (currentMode: mode) => {
+      setShow(true);
+      setMode(currentMode);
+    };
+  
+    const showDatepicker = () => {
+      showMode('date');
+    };
+  
+    const showTimepicker = () => {
+      showMode('time');
+    };
+  
+    useEffect(() => {
+      const getUsers = async () => {
+        const user = await getData();
+        setUser(user);
+      };
+  
+      getUsers();
+    }, []);
+  
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem("user");
+        setLoading(false)
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: "Submit completion" }} />
-      <View>
-        <Text>Hello {id}</Text>
-      </View>
-      <Formik
-        initialValues={{
-          user: undefined,
-          trail: id,
-          start: "",
-          end: "", 
-        }}
-        onSubmit={values => console.log(values)}
-      >
-        {({handleChange, handleSubmit, values}) => (
-          <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', 'alignItems': 'center'}}>
-            <View style={{display: 'flex', flexDirection : 'row', width: '100%', justifyContent: 'space-evenly'}}>
-              <Text>User ID</Text>
-              <TextInput
-                onChangeText={handleChange('user')}
-                value={values.user}
-                // label="User ID"
-                placeholder="User ID"
-              />
-            </View>
-            <View style={{display: 'flex', flexDirection : 'row', width: '100%', justifyContent: 'space-evenly'}}>
-              <Text>Trail ID</Text>
-              <TextInput
-                onChangeText={handleChange('trail')}
-                value={id}
-                // label="User ID"
-                placeholder="Trail ID"
-              />
-            </View>
-            <View style={{display: 'flex', flexDirection : 'row', width: '100%', justifyContent: 'space-evenly'}}>
-              <Text>Start</Text>
-              <TextInput
-                onChangeText={handleChange('start')}
-                value={values.start}
-                // label="User ID"
-                placeholder="Start"
-              />
-            </View>
-            {/* {errors.firstName ? (
-              <Text>{errors.firstName}</Text>
-            ) : (
-              <></>
-            )} */}
-            <Button title='Submit' onPress={handleSubmit as (event: GestureResponderEvent | undefined) => void} color={'#fff'} />
-          </View>
-        )}
-      </Formik>
+      {loading ? <Text style={{ color: "#FFA500" }}>Loading</Text> : 
+      <>
+          <Formik
+            initialValues={{
+              user: user?.id.toString(),
+              trail: id,
+              start: "",
+              end: "", 
+            }}
+            onSubmit={values => console.log(values)}
+          >
+            {({handleChange, handleSubmit, setFieldValue, values}) => (
+              <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', 'alignItems': 'center', width: '100%'}}>
+                <View style={styles.rowWrapper}>
+                  <Text style={styles.label}>User ID</Text>
+                  <TextInput
+                    style={{fontSize: 24, color: '#fff'}}
+                    onLayout={() => setFieldValue('user', user?.id.toString())}
+                    onChangeText={handleChange('user')}
+                    value={user?.id.toString()}
+                    // label="User ID"
+                    placeholder="User ID"
+                    keyboardType='numbers-and-punctuation'
+                  />
+                </View>
+                <View style={styles.rowWrapper}>
+                  <Text style={styles.label}>Trail ID</Text>
+                  <TextInput
+                    style={{fontSize: 24, color: '#fff'}}
+                    onChangeText={handleChange('trail')}
+                    value={id}
+                    editable={false}
+                    // label="User ID"
+                    placeholder="Trail ID"
+                  />
+                </View>
+                <View style={styles.rowWrapper}>
+                  <Text style={styles.label}>Start</Text>
+                  {/* <TextInput
+                    onChangeText={handleChange('start')}
+                    value={values.start}
+                    // label="User ID"
+                    placeholder="Start"
+                  /> */}
+                  <SafeAreaView>
+                    {/* <Button onPress={showDatepicker} title="Show date picker!" />
+                    <Button onPress={showTimepicker} title="Show time picker!" /> */}
+                    {show && (
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        value={startDate}
+                        mode='datetime'
+                        onChange={(e, t) => {onStartChange(e, t); setFieldValue('start', t?.toISOString())}}
+                      />
+                    )}
+                  </SafeAreaView>
+                </View>
+                <View style={styles.rowWrapper}>
+                  <Text style={styles.label}>End</Text>
+                  {/* <TextInput
+                    onChangeText={handleChange('start')}
+                    value={values.start}
+                    // label="User ID"
+                    placeholder="Start"
+                  /> */}
+                  <SafeAreaView>
+                    {/* <Button onPress={showDatepicker} title="Show date picker!" />
+                    <Button onPress={showTimepicker} title="Show time picker!" /> */}
+                    {show && (
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        value={endDate}
+                        mode='datetime'
+                        onChange={(e, t) => {onEndChange(e, t); setFieldValue('end', t?.toISOString())}}
+                      />
+                    )}
+                  </SafeAreaView>
+                </View>
+                {/* {errors.firstName ? (
+                  <Text>{errors.firstName}</Text>
+                ) : (
+                  <></>
+                )} */}
+                <View style={{borderColor: '#000', borderWidth: 1, borderStyle: 'solid', borderRadius: 10, backgroundColor: '#000'}}>
+                  <Button title='Submit' onPress={handleSubmit as (event: GestureResponderEvent | undefined) => void} color={'#F5E960'}  />
+                </View>
+              </View>
+            )}
+          </Formik>
+          <Text>selected: {startDate.toISOString()} {endDate.toISOString()}</Text>
+        </>
+      }
       {/* <ScrollView keyboardShouldPersistTaps={'handled'}>
       <DismissKeyboard>
         <TextInput
@@ -117,4 +221,14 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  label: {
+    fontSize: 32
+  },
+  rowWrapper: {
+    display: 'flex', 
+    flexDirection : 'row', 
+    width: '100%', 
+    justifyContent: 'space-between',
+    paddingHorizontal: 16
+  }
 });

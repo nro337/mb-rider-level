@@ -7,7 +7,7 @@ import { Stack } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 
-export default function TabTwoScreen() {
+export default function About() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 

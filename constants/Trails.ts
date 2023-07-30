@@ -16,7 +16,8 @@ export type TrailData = {
 }
 
 export type ItemProps = {
-  item: TrailType;
+  // item: TrailType;
+  item: TrailData;
   onPress: () => void;
   backgroundColor: string;
   textColor: string;
