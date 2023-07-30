@@ -7,6 +7,7 @@ import { Stack } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { Formik } from "formik";
+import { ScrollView } from "react-native-gesture-handler";
 
 type SubmissionStrings = {
   title: string,
@@ -80,7 +81,8 @@ export default function NewTrail() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={{width: '100%'}}>
       {loading ? <Stack.Screen options={{ title: 'New Trail' }} /> : <Stack.Screen options={{ title: user?.email }} />}
       {loading ? (
         <Text style={{ color: "#FFA500" }}>Loading</Text>
@@ -242,7 +244,7 @@ export default function NewTrail() {
                   keyboardType='numbers-and-punctuation'
                 /> */}
               </View>
-              <View style={{borderColor: '#000', borderWidth: 1, borderStyle: 'solid', borderRadius: 10, backgroundColor: '#000'}}>
+              <View style={{borderColor: '#000', borderWidth: 1, borderStyle: 'solid', borderRadius: 10, backgroundColor: '#000', marginBottom: 300}}>
                 <Button title='Submit' onPress={handleSubmit as (event: GestureResponderEvent | undefined) => void} color={'#F5E960'}  />
               </View>
             </View>
@@ -250,7 +252,8 @@ export default function NewTrail() {
         </Formik>
       </>
       )}
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
