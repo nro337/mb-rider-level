@@ -81,6 +81,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="(four)"
+        options={{
+          title: 'Create Trail',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <TabBarIcon name="tree" color={color} />,
+          tabBarActiveTintColor: '#000',
+          tabBarActiveBackgroundColor: Colors[colorScheme ?? 'light'].tabBackgroundSelected,
+          tabBarInactiveBackgroundColor: '#D9D9D9'
+        }}
+      />
+      <Tabs.Screen
         name="(three)"
         options={{
           title: 'About',

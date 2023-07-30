@@ -15,9 +15,11 @@ export type TrailData = {
   img: string;
 }
 
+export type TrailDataWithFlow = TrailData & {flow?: number}
+
 export type ItemProps = {
   // item: TrailType;
-  item: TrailData;
+  item: TrailDataWithFlow;
   onPress: () => void;
   backgroundColor: string;
   textColor: string;

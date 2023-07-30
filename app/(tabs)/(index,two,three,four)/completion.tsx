@@ -94,6 +94,17 @@ export default function Completion() {
       }
     };
 
+    const submitHandler = (obj: any) => {
+      let parsed_obj: Submission = {
+        user: parseInt(obj.user),
+        trail: parseInt(obj.trail),
+        start: obj.start,
+        end: obj.end,
+        flow: parseFloat(obj.flow)
+      }
+      console.log(parsed_obj)
+    }
+
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: "Submit completion" }} />
@@ -107,7 +118,7 @@ export default function Completion() {
               end: "", 
               flow: 0
             }}
-            onSubmit={values => console.log(values)}
+            onSubmit={values => submitHandler(values)}
           >
             {({handleChange, handleSubmit, setFieldValue, values, errors}) => (
               <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', 'alignItems': 'center', width: '100%'}}>
