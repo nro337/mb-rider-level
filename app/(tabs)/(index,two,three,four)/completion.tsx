@@ -214,7 +214,7 @@ export default function Completion() {
               </View>
             )}
           </Formik>
-          <Text>selected: {startDate.toISOString()} {endDate.toISOString()}</Text>
+          {/* <Text>selected: {startDate.toISOString()} {endDate.toISOString()}</Text> */}
         </>
       }
       {/* <ScrollView keyboardShouldPersistTaps={'handled'}>

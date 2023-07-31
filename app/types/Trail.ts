@@ -7,7 +7,7 @@ type TrailType = {
   end_lat: number,
   end_lon: number,
   length: number,
-  img?: string,
+  image_url?: string,
   difficulty_rating?: string,
   town?: string,
   state?: string,
@@ -15,7 +15,10 @@ type TrailType = {
   rating?: number,
   lat?: number,
   long?: number,
-  summary?: string
+  summary?: string,
+  flow?: number,
+  imba_score?: string,
+  score?: number
 }
 
 export default TrailType

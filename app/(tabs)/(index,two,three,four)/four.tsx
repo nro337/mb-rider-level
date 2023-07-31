@@ -78,12 +78,18 @@ export default function NewTrail() {
       image_url: obj.image_url
     }
     console.log(parsed_obj)
+
+    // fetch('https://bike.langswap.app/trail', {
+    //   body: JSON.stringify(parsed_obj),
+    //   headers: { 'Content-Type': 'application/json' },
+    //   method: 'POST'
+    // }).then((res) => res.json()).then((respData) => console.log(respData)).catch((error) => console.log(error))
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{width: '100%'}}>
-      {loading ? <Stack.Screen options={{ title: 'New Trail' }} /> : <Stack.Screen options={{ title: user?.email }} />}
+      <Stack.Screen options={{ title: 'New Trail' }} />
       {loading ? (
         <Text style={{ color: "#FFA500" }}>Loading</Text>
       ) : (
@@ -136,7 +142,7 @@ export default function NewTrail() {
                   value={values.start_lat.toString()}
                   // label="User ID"
                   placeholder="Starting Lat"
-                  keyboardType="numeric"
+                  keyboardType="numbers-and-punctuation"
                 />
               </View>
               <View style={styles.rowWrapper}>
@@ -147,7 +153,7 @@ export default function NewTrail() {
                   value={values.start_lon.toString()}
                   // label="User ID"
                   placeholder="Starting Long"
-                  keyboardType="numeric"
+                  keyboardType="numbers-and-punctuation"
                 />
               </View>
               <View style={styles.rowWrapper}>
@@ -158,7 +164,7 @@ export default function NewTrail() {
                   value={values.end_lat.toString()}
                   // label="User ID"
                   placeholder="Ending Lat"
-                  keyboardType="numeric"
+                  keyboardType="numbers-and-punctuation"
                 />
               </View>
               <View style={styles.rowWrapper}>
@@ -169,7 +175,7 @@ export default function NewTrail() {
                   value={values.end_lon.toString()}
                   // label="User ID"
                   placeholder="Ending Long"
-                  keyboardType="numeric"
+                  keyboardType="numbers-and-punctuation"
                 />
               </View>
               <View style={styles.rowWrapper}>

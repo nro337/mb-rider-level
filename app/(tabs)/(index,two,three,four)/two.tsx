@@ -21,6 +21,7 @@ export default function TabTwoScreen() {
   const [segment] = useSegments() as [SharedSegment]
   const router = useRouter()
   const ref = useRef<FlatList>(null)
+  const [scores, setScores] = useState(false)
 
   useEffect(() => {
     const getUsers = async () => {
@@ -53,12 +54,12 @@ export default function TabTwoScreen() {
     <TouchableOpacity onPress={onPress} style={[styles.item, {backgroundColor}]}>
       <View style={{display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between', backgroundColor: 'transparent'}}>
         <Text style={[styles.title, {color: textColor}]}>{item.title}</Text>
-        <Text style={[styles.title, {color: textColor}]}>Flow: {item.flow}</Text>
+        <Text style={[styles.title, {color: textColor}]}>{item.town}, {item.state}</Text>
       </View>
     </TouchableOpacity>
   )
 
-  const renderItem = ({item}: {item: TrailData}) => {
+  const renderItem = ({item}: {item: TrailType}) => {
     const backgroundColor = item.id === selectedId ? '#E83F6F' : '#FFFFFF';
     const color = item.id === selectedId ? 'white' : 'black';
 
@@ -72,26 +73,26 @@ export default function TabTwoScreen() {
     );
   };
 
-  const add_flow = (trails: TrailData[]) : TrailDataWithFlow[] => {
-    let new_trails: TrailDataWithFlow[] = []
-    for (let t of trails) {
-      new_trails.push({
-        flow: Math.floor(Math.random() * (10 - 0 + 1) + 0),
-        ...t
-      })
-    }
-    return new_trails;
-  }
+  // const add_flow = (trails: TrailData[]) : TrailDataWithFlow[] => {
+  //   let new_trails: TrailDataWithFlow[] = []
+  //   for (let t of trails) {
+  //     new_trails.push({
+  //       flow: Math.floor(Math.random() * (10 - 0 + 1) + 0),
+  //       ...t
+  //     })
+  //   }
+  //   return new_trails;
+  // }
 
   return (
     // <View style={styles.container}>
     <>
-      <Stack.Screen options={{title: 'My Top 10'}} />
+      <Stack.Screen options={{title: 'My Top Trails'}} />
       <FlatList
         ref={ref}
         scrollToOverflowEnabled
         contentInsetAdjustmentBehavior='automatic'
-        data={add_flow(Trails)}
+        data={trails}
         style={{flex: 1}}
         renderItem={renderItem}
         keyExtractor={item => item.id}

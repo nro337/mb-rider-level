@@ -5,7 +5,8 @@ type User = {
   full_name: string,
   id: number,
   trails: [any],
-  score: number
+  score: number,
+  gender?: number
 }
 
 export default User;

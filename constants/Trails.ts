@@ -19,7 +19,7 @@ export type TrailDataWithFlow = TrailData & {flow?: number}
 
 export type ItemProps = {
   // item: TrailType;
-  item: TrailDataWithFlow;
+  item: TrailType;
   onPress: () => void;
   backgroundColor: string;
   textColor: string;

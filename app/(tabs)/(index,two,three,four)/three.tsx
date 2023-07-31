@@ -32,7 +32,7 @@ export default function About() {
 
   return (
     <View style={styles.container}>
-      {loading ? <Stack.Screen options={{ title: 'About' }} /> : <Stack.Screen options={{ title: user?.email }} />}
+      {loading ? <Stack.Screen options={{ title: 'About' }} /> : <Stack.Screen options={{ title: user?.full_name }} />}
       {loading ? (
         <Text style={{ color: "#FFA500" }}>Loading</Text>
       ) : (
@@ -40,28 +40,29 @@ export default function About() {
           <View style={styles.row}>
             <View style={styles.block}>
               <Text style={{ fontSize: 20 }}>Rider Level</Text>
-              <Text style={{ fontSize: 18 }}>{user?.score}</Text>
+              {/* // @ts-ignore */}
+              <Text style={{ fontSize: 18 }}>{user && user.score &&(user?.score / 10).toPrecision(2)}</Text>
             </View>
           </View>
           <View style={styles.row}>
             <View style={styles.block}>
-              <Text style={{ fontSize: 20 }}>Avg Trail Level</Text>
-              <Text style={{ fontSize: 18 }}>7.7</Text>
+              <Text style={{ fontSize: 20 }}>Email</Text>
+              <Text style={{ fontSize: 16 }}>{user?.email}</Text>
             </View>
             <View style={styles.block}>
-              <Text style={{ fontSize: 20 }}>Avg Run Time</Text>
-              <Text style={{ fontSize: 18 }}>10:25</Text>
+              <Text style={{ fontSize: 20 }}>Active User?</Text>
+              <Text style={{ fontSize: 16 }}>{user?.is_active === true ? 'Yes' : 'No'}</Text>
             </View>
           </View>
           <View style={styles.row}>
             <View style={styles.block}>
-              <Text style={{ fontSize: 20 }}>Avg Speed</Text>
-              <Text style={{ fontSize: 18 }}>23.9 mph</Text>
+              <Text style={{ fontSize: 20 }}>Gender</Text>
+              <Text style={{ fontSize: 18 }}>{user?.gender === 1 ? 'Male' : 'Female'}</Text>
             </View>
-            <View style={styles.block}>
+            {/* <View style={styles.block}>
               <Text style={{ fontSize: 20 }}>Flow</Text>
               <Text style={{ fontSize: 18 }}>6.7</Text>
-            </View>
+            </View> */}
           </View>
         </View>
       )}

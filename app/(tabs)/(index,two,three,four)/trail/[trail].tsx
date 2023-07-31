@@ -50,6 +50,26 @@ export default function Trail() {
       }
     }
   }, [trails])
+
+  useEffect(() => {
+    if (trail && !trail.score) {
+      fetch(`https://bike.langswap.app/trails/${trail.id}`)
+      .then((response) => response.json())
+      .then(async (json) => {
+        try {
+          setTrail({
+            ...trail,
+            score: json.score / 10
+          })
+          // const jsonValue = JSON.stringify(json);
+          // await AsyncStorage.setItem('trails', jsonValue);
+        } catch (error) {
+          console.error(error)
+        }
+      })
+      .catch((error) => console.error(error))
+    }
+  }, [trail])
   
   const [assets, error]: [Asset[] | undefined, Error | undefined]  = useAssets([
     require("@/assets/images/green_circle.jpg"),
@@ -105,74 +125,74 @@ export default function Trail() {
         <View style={styles.container}>
           <ExpoImage 
             style={styles.image}
-            source={trail.img ? trail.img : 'https://cdn-icons-png.flaticon.com/512/13/13437.png?w=740&t=st=1690651448~exp=1690652048~hmac=6855ee3979b2c745c6ff2c8979eaab68c8b97f7abf78d52cb4aec6bab9782b19'}
+            source={trail.image_url ? trail.image_url : 'https://cdn-icons-png.flaticon.com/512/13/13437.png?w=740&t=st=1690651448~exp=1690652048~hmac=6855ee3979b2c745c6ff2c8979eaab68c8b97f7abf78d52cb4aec6bab9782b19'}
             contentFit='cover'
             transition={100}
           />
-          {assets && trail.difficulty_rating === 'Green' && 
+          {assets && trail.imba_score === 'Green' && 
             <ExpoImage 
-              style={styles.difficulty_rating}
+              style={styles.imba_score}
               source={assets[0].uri}
               contentFit='cover'
           />
           }
-          {assets && trail.difficulty_rating === 'Blue' && 
+          {assets && trail.imba_score === 'Blue' && 
             <ExpoImage 
-              style={styles.difficulty_rating}
+              style={styles.imba_score}
               source={assets[1].uri}
               contentFit='cover'
           />
           }
-          {assets && trail.difficulty_rating === 'Green/Blue' &&
+          {assets && trail.imba_score === 'Green/Blue' &&
           <View style={styles.image_layout}>
             <ExpoImage 
-              style={styles.difficulty_rating}
+              style={styles.imba_score}
               source={assets[0].uri}
               contentFit='cover'
             />
             <ExpoImage 
-              style={styles.difficulty_rating}
+              style={styles.imba_score}
               source={assets[1].uri}
               contentFit='cover'
             />
           </View>
           }
-          {assets && trail.difficulty_rating === 'Blue/Black' &&
+          {assets && trail.imba_score === 'Blue/Black' &&
           <View style={styles.image_layout}>
             <ExpoImage 
-              style={styles.difficulty_rating}
+              style={styles.imba_score}
               source={assets[1].uri}
               contentFit='cover'
             />
             <ExpoImage 
-              style={styles.difficulty_rating}
+              style={styles.imba_score}
               source={assets[2].uri}
               contentFit='cover'
             />
           </View>
           }
-          {assets && trail.difficulty_rating === 'Black' && 
+          {assets && trail.imba_score === 'Black' && 
             <ExpoImage 
-              style={styles.difficulty_rating}
+              style={styles.imba_score}
               source={assets[2].uri}
               contentFit='cover'
           />
           }
-          {assets && trail.difficulty_rating === 'Double Black' && 
+          {assets && trail.imba_score === 'Double Black' && 
             <ExpoImage 
               style={{width: 150, height: 100}}
               source={assets[3].uri}
               contentFit='cover'
           />
           }
-          {assets && trail.difficulty_rating === undefined && 
+          {assets && trail.imba_score === undefined && 
             <ExpoImage 
               style={{width: 125, height: 75}}
               source={'https://cdn-icons-png.flaticon.com/512/13/13437.png?w=740&t=st=1690651448~exp=1690652048~hmac=6855ee3979b2c745c6ff2c8979eaab68c8b97f7abf78d52cb4aec6bab9782b19'}
               contentFit='contain'
           />
           }
-          <Text style={{fontSize: 20, color: '#ffffff'}}>{trail.description}</Text>
+          <Text style={{fontSize: 20, color: '#ffffff'}}>{trail.description === 'string' ? trail.imba_score : trail.description}</Text>
           <View style={styles.table}>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
               <View style={{}}>
@@ -203,10 +223,10 @@ export default function Trail() {
                 <Text style={{color: '#fff', fontSize: 24}}>Trail Level</Text>
               </View>
               <View>
-                <Text style={{color: '#fff', fontSize: 24}}>7</Text>
+                <Text style={{color: '#fff', fontSize: 24}}>{(trail.score)?.toPrecision(2)}</Text>
               </View>
             </View>
-            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+            {/* <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
               <View>
                 <Text style={{color: '#fff', fontSize: 24}}>Avg. Speed</Text>
               </View>
@@ -221,7 +241,7 @@ export default function Trail() {
               <View>
                 <Text style={{color: '#fff', fontSize: 24}}>7:12</Text>
               </View>
-            </View>
+            </View> */}
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
               <View>
                 <Text style={{color: '#fff', fontSize: 24}}>Flow</Text>
@@ -294,18 +314,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#585123',
     width: 200,
     height: 200,
-    // height: '50%',
+    // height: '50%'
   },
-  difficulty_rating: {
+  imba_score: {
     backgroundColor: '#585123',
     width: 75,
-    height: 75
+    height: 75,
   },
   image_layout: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   table: {
     flex: 1,

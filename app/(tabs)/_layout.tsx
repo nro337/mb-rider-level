@@ -72,7 +72,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(two)"
         options={{
-          title: 'My Top 10',
+          title: 'My Top Trails',
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="arrow-up" color={color} />,
           tabBarActiveTintColor: '#000',

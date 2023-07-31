@@ -25,7 +25,7 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // TODO: Populate Trails in DB
+  // option: Populate Trails in DB
   // useEffect(() => {
   //   for (let trail of Trails) {
   //     fetch(`https://bike.langswap.app/trail`, {

@@ -21,47 +21,47 @@ export default function TabOneScreen() {
   const ref = useRef<FlatList>(null);
 
   const [loading, setLoading] = useState(false);
-  const [trails, setTrails] = useState<TrailData | any | null>(null);
+  const [trails, setTrails] = useState<TrailType | any | null>(null);
 
   ///
-  // useEffect(() => {
-  //   // setLoading(true)
-  //   fetch('https://bike.langswap.app/trails')
-  //     .then((response) => response.json())
-  //     .then(async (json) => {
-  //       try {
-  //         const jsonValue = JSON.stringify(json);
-  //         await AsyncStorage.setItem('trails', jsonValue);
-  //       } catch (error) {
-  //         console.error(error)
-  //       }
-  //     })
-  //     .catch((error) => console.error(error))
-  //     // .finally(() => setLoading(false));
-  // }, []);
-  // ///
+  useEffect(() => {
+    // setLoading(true)
+    fetch('https://bike.langswap.app/trails')
+      .then((response) => response.json())
+      .then(async (json) => {
+        try {
+          const jsonValue = JSON.stringify(json);
+          await AsyncStorage.setItem('trails', jsonValue);
+        } catch (error) {
+          console.error(error)
+        }
+      })
+      .catch((error) => console.error(error))
+      // .finally(() => setLoading(false));
+  }, []);
+  ///
 
-  // useEffect(() => {
-  //   const getTrails = async () => {
-  //     await getData();
-  //   };
+  useEffect(() => {
+    const getTrails = async () => {
+      await getData();
+    };
 
-  //   getTrails(); // run it, run it
-  // }, []);
+    getTrails(); // run it, run it
+  }, []);
 
-  // const getData = async () => {
-  //   try {
-  //     const response = await fetch("https://bike.langswap.app/trails");
-  //     const trails = await response.json();
-  //     // console.log(trails);
-  //     setTrails(trails);
-  //     setLoading(false);
-  //     // return jsonValue != null ? JSON.parse(jsonValue) : null;
-  //   } catch (e) {
-  //     // error reading value
-  //     console.error(e);
-  //   }
-  // };
+  const getData = async () => {
+    try {
+      const response = await fetch("https://bike.langswap.app/trails");
+      const trails = await response.json();
+      // console.log(trails);
+      setTrails(trails);
+      setLoading(false);
+      // return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+      console.error(e);
+    }
+  };
 
   // useScrollToTop(
   //   ref,
@@ -92,12 +92,12 @@ export default function TabOneScreen() {
       style={[styles.item, { backgroundColor }]}
     >
       <Text style={[styles.title, { color: textColor }]}>{item.title}</Text>
-      <Text style={[styles.title, { color: textColor }]}>{item.length} mi</Text>
+      <Text style={[styles.title, { color: textColor }]}>{item.length} ft.</Text>
     </TouchableOpacity>
     // </Link>
   );
 
-  const renderItem = ({ item }: { item: TrailData }) => {
+  const renderItem = ({ item }: { item: TrailType }) => {
     const backgroundColor = item.id === selectedId ? "#E83F6F" : "#FFFFFF";
     const color = item.id === selectedId ? "white" : "black";
 
@@ -122,7 +122,7 @@ export default function TabOneScreen() {
           ref={ref}
           scrollToOverflowEnabled
           contentInsetAdjustmentBehavior="automatic"
-          data={Trails}
+          data={trails}
           style={{ flex: 1 }}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}

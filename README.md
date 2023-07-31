@@ -3,7 +3,11 @@
 ### Group 3
 #### Amaliya Akopyan, Hannah Halvorsen, Nick Alico
 
-*VIDEO HERE*
+<img src="https://lh3.googleusercontent.com/drive-viewer/AITFw-zljmiXO1pzqUSB4KTCVirVJXSwaP_SIOnno65CtpdL9kHdVT6G67cP7Fm4RAM39uAeRRslakdlfDpXga1OIb0_CWx4Nw=s1600" width="200" height="400" alt="Trail Score" />
+
+<img src="https://lh3.googleusercontent.com/drive-viewer/AITFw-z3ppC4PReFAt_mmaPOZk2XNNWUVjCKEIeGeZezl6Br1_AsOy_YCZvu7ki1r5sBO-kbkR70xcKWID_rPNqqZEAJu7I=s1600" width="200" height="400" alt="Rider Score" />
+
+---
 
 The Mountain Bike Rider and Trail Metrics application aims to provide mountain bikers with a personalized lense into how they are performing, and where their training may take them next. The application integrates your performance metrics with crowd-sourced mountain bike trail data to help inform riders on which trails near them may be a safe, incremental challenge in their training journey.
 
@@ -35,7 +39,6 @@ npx expo start
 * Then, open the Camera app on your iPhone. In your terminal, you should see a QR code is generated. Scan the QR code with your camera.
 * This will prompt the Expo Go application to launch.
 * Allow the app to load, and you will see the application render.
-  * [Debugging Details](https://apps.apple.com/us/app/expo-go/id982107779)
   * [Official Documentation](https://docs.expo.dev/get-started/installation/)
 
 ## How to stop
@@ -44,7 +47,26 @@ npx expo start
 ## API Documentation
 * Our Backend API is being host live at [bike.langswap.app](https://bike.langswap.app/)
 * Endpoint Documentation: [https://bike.langswap.app/docs](https://bike.langswap.app/docs)
-* **Backend Gitlab Reposity**: [https://gitlab.com/ama952/mountain-bike](https://gitlab.com/ama952/mountain-bike)
+* **Backend Gitlab Repository**: [https://gitlab.com/ama952/mountain-bike](https://gitlab.com/ama952/mountain-bike)
+
+## Testing our API and Score Calculations
+* In order to test our score calculations, please visit our FastAPI [Swagger endpoint](https://bike.langswap.app/docs#/default/mock_data_mock__post), which serves as the source of our backend documentation and playground for interfacing with our score logic.
+* **All backend code is located in this [Gitlab](https://gitlab.com/ama952/mountain-bike)**
+
+Data:
+1. If data is not already populated, execute the `/mock/` endpoint. This causes the following steps:
+  * One user created (`factory.py`)
+  * 6 trail sources created (`factory.py`)
+  * 6 Trail completion source created (`factory.py`)
+  * Sensors and Signals area added
+    * See our [Google Sheet](https://docs.google.com/spreadsheets/d/10odqgmc4Jo6C72yrYMxMG65jGFvM4nf60e60FuxjNmE/edit?usp=sharing) and specifically the `signals db` sheet
+      * All columns except `lat, long, trail_id, user_id, and time` are treated as sensors
+      * Thus, all rows of the table are treated as signals
+  * After `/mock/` endpoint is executed, you can add additional data as you wish. Be sure you create unique `trail_id` and `user_id` for any new items. For instance, if you try to create new trail_completion with `user_id=1` and `trail_id=1`, the system will return an error.
+  * Currently not all CRUD operations are covered. There are no endpoints to delete objects (but you can always reset dataset with default data by using `/mock/`). There are also no endpoints to update objects.
+
+Scores:
+* Trail score and Rider score are re-calculated each time `GET` is executed. Score is represented if fetching a single object only (i.e. `/users/<id>` but not `/users/`
 
 ## Project Architecture
 ![Project Architecture](https://lh3.googleusercontent.com/drive-viewer/AITFw-wXcmTPMOpn0zlQwmuTSX4GJ0Dklw7JZTGJcpdbVq8ZiOETpNw0rD3EChPYUmXF4o57dAL5sZTtP9Is6E-dcUt4V5VSPw=s1600)
